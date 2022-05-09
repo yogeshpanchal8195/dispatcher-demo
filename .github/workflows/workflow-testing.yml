@@ -15,7 +15,7 @@ jobs:
         with:
           owner: yogeshpanchal8195
           repo: receiver-demo
-          github_token: ${{ secrets.PAT_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           workflow_file_name: workflow.yml
           ref: main
           wait_interval: 10 
