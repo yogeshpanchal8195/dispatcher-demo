@@ -10,6 +10,8 @@ jobs:
       - name: Setup repo
         uses: actions/checkout@v2
 
+      - run: echo ${{ secrets.GITHUB_TOKEN }}
+
       - name: Repository Dispatch
         uses: peter-evans/repository-dispatch@v2
         with:
