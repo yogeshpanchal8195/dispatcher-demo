@@ -1,4 +1,4 @@
-name: Automation Testing
+name: Workflow Testing
 
 # only trigger on pull request closed events
 on: push

@@ -1,4 +1,4 @@
-name: Automation Testing
+name: Repo Testing
 
 # only trigger on pull request closed events
 on: push
@@ -10,7 +10,9 @@ jobs:
       - name: Setup repo
         uses: actions/checkout@v2
 
-      - run: echo ${{ secrets.GITHUB_TOKEN }}
+      - name: check git hub 
+        if: github.event.pull_request.merged == true
+        run: echo "Present"
 
       - name: Repository Dispatch
         uses: peter-evans/repository-dispatch@v2
