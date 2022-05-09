@@ -1,0 +1,19 @@
+name: Automation Testing
+
+# only trigger on pull request closed events
+on: push
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup repo
+        uses: actions/checkout@v2
+
+      - name: Repository Dispatch
+        uses: peter-evans/repository-dispatch@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          repository: yogeshpanchal8195/receiver-demo
+          event-type: my-event
+          client-payload: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}", "url": "https://expo.dev/artifacts/eas/3U9hD3WPuycnoB5kj9jMdV.apk"}'
