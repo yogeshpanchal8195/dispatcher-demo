@@ -16,6 +16,6 @@ jobs:
           workflow: workflow
           repo: yogeshpanchal8195/receiver-demo
           token: ${{ secrets.PAT_TOKEN }}
-          inputs: '{ "message": "blah blah", "debug": true }'
+          inputs: '{ "message": "blah blah" }'
 
       
