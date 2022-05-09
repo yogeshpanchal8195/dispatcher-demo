@@ -13,9 +13,9 @@ jobs:
       - name: Invoke workflow in another repo with inputs
         uses: benc-uk/workflow-dispatch@v1
         with:
-          workflow: workflow
+          workflow: repository
           repo: yogeshpanchal8195/receiver-demo
           token: ${{ secrets.PAT_TOKEN }}
-          inputs: '{ "message": "blah blah" }'
+          inputs: '{}'
 
       
