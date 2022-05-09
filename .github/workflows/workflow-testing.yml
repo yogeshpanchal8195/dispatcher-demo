@@ -1,4 +1,4 @@
-name: Automation Testing
+name: Workflow Testing
 
 # only trigger on pull request closed events
 on: push
@@ -15,10 +15,10 @@ jobs:
         with:
           owner: yogeshpanchal8195
           repo: receiver-demo
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.PAT_TOKEN }}
           workflow_file_name: workflow.yml
           ref: main
-          wait_interval: 10
+          wait_interval: 10 
           client_payload: '{
             "url": "https://expo.dev/artifacts/eas/3U9hD3WPuycnoB5kj9jMdV.apk"
           }'
