@@ -16,4 +16,4 @@ jobs:
           token: ${{ secrets.PAT_TOKEN }}
           repository: yogeshpanchal8195/receiver-demo
           event-type: my-event 
-          client-payload: '{"head_ref": "${{ github.base_ref }}", "ref": "${{ github.ref }}", "sha": "${{ github.sha }}", "url": "https://expo.dev/artifacts/eas/3U9hD3WPuycnoB5kj9jMdV.apk"}'
+          client-payload: '{"head_ref": "${{ github.ref_name }}", "ref": "${{ github.ref }}", "sha": "${{ github.sha }}", "url": "https://expo.dev/artifacts/eas/3U9hD3WPuycnoB5kj9jMdV.apk"}'
