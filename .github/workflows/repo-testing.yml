@@ -10,7 +10,7 @@ jobs:
       - name: Setup repo
         uses: actions/checkout@v2
 
-      - name: Repository Dispatch
+      - name: Repository Dispatch 
         uses: peter-evans/repository-dispatch@v2
         with:
           token: ${{ secrets.PAT_TOKEN }}
