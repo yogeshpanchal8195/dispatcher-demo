@@ -10,7 +10,7 @@ jobs:
       - name: Setup repo
         uses: actions/checkout@v2
 
-      - run: |
+      - run: >-
          curl --location --request POST 'https://api.github.com/repos/yogeshpanchal8195/receiver-demo/dispatches' \
           --header 'Accept: application/vnd.github.v3+json' \
           --header 'Content-Type: application/json' \
