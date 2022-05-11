@@ -10,12 +10,12 @@ jobs:
       - name: Setup repo
         uses: actions/checkout@v2
 
-      - run: >-
-         curl --location --request POST 'https://api.github.com/repos/yogeshpanchal8195/receiver-demo/dispatches' \
-          --header 'Accept: application/vnd.github.v3+json' \
-          --header 'Content-Type: application/json' \
-          --header 'Authorization: Bearer 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' \
-          --data-raw '{ "event_type":"automate-test", "client_payload":{"unit":"false"} }'
+      - run: |
+         curl -L -X POST 'https://api.github.com/repos/yogeshpanchal8195/receiver-demo/dispatches' \
+          -H "Accept: application/vnd.github.v3+json" \
+          -H "Content-Type: application/json" \
+          -H 'Authorization: Bearer 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' \
+          -d '{ "event_type":"automate-test", "client_payload":{"unit":"false"} }'
 
       # - name: Repository Dispatch 
       #   uses: peter-evans/repository-dispatch@v2
