@@ -3,6 +3,17 @@ name: Repo Testing
 # only trigger on pull request closed events
 on: push
 
+env: 
+  DAY_OF_WEEK: Monday
+  DAY_OF_WEEK1: Monday1
+  MONTH: ${{0}}
+  MONTH1: ${{1}}
+  myNULL: ${{ null }}
+  myTrue: ${{true}}
+  myFalse: ${{false}}
+  myTrue1: true
+  myFalse1: false
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -10,15 +21,117 @@ jobs:
       - name: Setup repo
         uses: actions/checkout@v2
 
-      - run: |
-          curl -L -X POST 'https://api.github.com/repos/yogeshpanchal8195/receiver-demo/dispatches' \
-          -H 'Accept: application/vnd.github.v3+json' \
-          -H 'Content-Type: application/json' \
-          -H 'Authorization: Bearer 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' \
-          -d '{
-              "event_type":"automate-test"
-              "client_payload":{"url":"alpha"}
-          }'
+      - run: echo ${{env.DAY_OF_WEEK}}
+
+      - run: echo ${{env.MONTH}}
+
+      - if: env.DAY_OF_WEEK == env.DAY_OF_WEEK1
+        run: echo "HELLO"
+
+      - if: env.DAY_OF_WEEK == env.MONTH
+        run: echo "HELLO1"
+
+      - if: env.DAY_OF_WEEK == env.MONTH1
+        run: echo "HELLO11"
+
+      - if: env.MONTH != null
+        run: echo "HELLO2"
+
+      - if: env.MONTH1 != null
+        run: echo "HELLO3"
+
+      - if: env.MONTH == null
+        run: echo "HELLO4"
+
+      - if: env.MONTH1 == null
+        run: echo "HELLO5"
+
+      - if: env.DAY_OF_WEEK == null
+        run: echo "HELLO44"
+
+      - if: env.DAY_OF_WEEK1 == null
+        run: echo "HELLO55"
+
+      - if: env.DAY_OF_WEEK == env.myTrue
+        run: echo "HELLO6"
+      
+      - if: env.MONTH == env.myTrue
+        run: echo "HELLO7"
+
+      - if: env.MONTH1 == env.myTrue
+        run: echo "HELLO8"
+
+      - if: env.DAY_OF_WEEK == env.myFalse
+        run: echo "HELLO9"
+      
+      - if: env.MONTH == env.myFalse
+        run: echo "HELLO10"
+
+      - if: env.MONTH1 == env.myFalse
+        run: echo "HELLO11"
+
+      - if: env.DAY_OF_WEEK == env.myTrue1
+        run: echo "HELLO12"
+      
+      - if: env.MONTH == env.myTrue1
+        run: echo "HELLO13"
+
+      - if: env.MONTH1 == env.myTrue1
+        run: echo "HELLO14"
+
+      - if: env.DAY_OF_WEEK == env.myFalse1
+        run: echo "HELLO15"
+      
+      - if: env.MONTH == env.myFalse1
+        run: echo "HELLO16"
+
+      - if: env.MONTH1 == env.myFalse1
+        run: echo "HELLO17"
+
+      - if: true == env.myTrue
+        run: echo "HELLO18"
+
+      - if: true == env.myTrue1
+        run: echo "HELLO19"
+
+      - if: false == env.myFalse
+        run: echo "HELLO20"
+
+      - if: false == env.myFalse
+        run: echo "HELLO21"
+
+      
+
+      
+
+      # - run: |
+      #     curl -L -X POST 'https://api.github.com/repos/yogeshpanchal8195/receiver-demo/dispatches' \
+      #     -H 'Accept: application/vnd.github.v3+json' \
+      #     -H 'Content-Type: application/json' \
+      #     -H 'Authorization: Bearer ${{ secrets.PAT_TOKEN }}' \
+      #     -d '{
+      #         "event_type":"automate-test"
+      #         "client_payload":{"url":"alpha"}
+      #     }'
+
+      # - run: |
+      #     curl -L -X POST 'https://api.github.com/repos/yogeshpanchal8195/dispatcher-demo/labels' \
+      #     -H 'Accept: application/vnd.github.v3+json' \
+      #     -H 'Authorization: Bearer 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' \
+      #     -H 'Content-Type: text/plain' \
+      #     -d '{   
+      #         "name":"Testing in progress",
+      #         "description":"Automation Testing is in progress",
+      #         "color":"f29513"
+      #     }'
+
+      # -run: |
+      #     curl -L -X POST 'https://api.github.com/repos/yogeshpanchal8195/receiver-demo/issues/ISSUE_NUMBER/labels' \
+      #     -H "Accept: application/vnd.github.v3+json" \
+      #     -H 'Content-Type: application/json' \
+      #     -H 'Authorization: Bearer ${{ secrets.PAT_TOKEN }}' \
+      #     -d '{"labels":["Testing in progress"]}'
+
       # - name: Repository Dispatch 
       #   uses: peter-evans/repository-dispatch@v2
       #   with:

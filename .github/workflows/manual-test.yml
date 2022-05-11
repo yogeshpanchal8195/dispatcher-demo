@@ -1,0 +1,244 @@
+name: Manual Run
+on:
+  workflow_dispatch:
+    inputs:
+      pr:
+        description: "Pull Request Number"
+        required: false
+
+      slack:
+        description: "slack channel"
+        required: false
+
+env: 
+  beeta: Beeta
+  url: null
+
+jobs:
+  build_eas_local:
+    runs-on: ubuntu-latest
+    environment: staging
+    steps:
+      - name: Get PR SHA
+        run: |
+          echo PR_DETAILS=$(curl --location --request GET 'https://api.github.com/repos/yogeshpanchal8195/dispatcher-demo/pulls/1' \
+          --header 'Accept: application/vnd.github.v3+json' \
+          --header 'Authorization: Bearer ${{ secrets.PAT_TOKEN }}' | jq -r '{url:.url,title:.title,sha:.head.sha}') >> $GITHUB_ENV
+
+      - run: echo ${{fromJSON(env.PR_DETAILS).url}}
+      - run: echo ${{fromJSON(env.PR_DETAILS).title}}
+      - run: echo ${{fromJSON(env.PR_DETAILS).sha}}
+
+      # - name: Get PR SHA 2
+      #   run: |
+      #     echo PR_DETAILSS=$(curl --location --request GET 'https://api.github.com/repos/yogeshpanchal8195/dispatcher-demo/pulls/1' \
+      #     --header 'Accept: application/vnd.github.v3+json' \
+      #     --header 'Authorization: Bearer ${{ secrets.PAT_TOKEN }}' | jq -r '.') >> $GITHUB_ENV
+
+      # - run: echo ${{fromJSON(env.PR_DETAILSS).url}}
+      # - run: echo ${{fromJSON(env.PR_DETAILSS).title}}
+      # - run: echo ${{fromJSON(env.PR_DETAILSS).head.sha}}
+      
+      # - name: Get PR SHA
+      #   id: vars
+      #   run: |
+      #     echo ::set-output name=jsonData::$(curl --location --request GET 'https://api.github.com/repos/yogeshpanchal8195/dispatcher-demo/pulls/1' \
+      #     --header 'Accept: application/vnd.github.v3+json' \
+      #     --header 'Authorization: Bearer ${{ secrets.PAT_TOKEN }}' | jq -r '{url:.url,title:.title,sha:.head.sha}')
+
+      # - run: echo "${{fromJSON(steps.vars.outputs.jsonData).url}}"
+      # - run: echo "${{fromJSON(steps.vars.outputs.jsonData).title}}"
+      # - run: echo "${{fromJSON(steps.vars.outputs.jsonData).sha}}"
+
+
+
+      # - name: use output
+      #   run: |
+      #     echo $json_var | jq '.url'
+      #   env:
+      #     json_var: ${{ steps.vars.outputs.jsonData}}
+
+      # - run: echo PR_URLLL= ${{toJSON(env.PR_DETAILS)}} | json url >> $GITHUB_ENV
+      # - run: echo ${{env.PR_URLLL}}
+
+      # - name: BALUE
+      #   id: vars
+      #   run: echo ::set-output name=jsonData::${{env.PR_DETAILS}} | json url
+      #   run: echo "::set-output name=jsonData::$content"        
+
+        # run: echo "::set-output name=jsonData::${{toJSON(env.PR_DETAILS)}} | json url"
+
+      # - run: echo ${{ steps.vars.outputs.jsonData }}
+      # - run: echo ${{ toJSON(steps.vars.outputs.jsonData) }}
+      
+
+
+      # - run: echo PR_OBJ=${{toJSON(env.PR_DETAILS)}} >> $GITHUB_ENV
+      # - run: echo ${{env.PR_OBJ}}
+      # - run: echo ${{env.PR_OBJ.url}}
+
+      # - run: echo PR_OBJJ=${{fromJSON(env.PR_DETAILS)}} >> $GITHUB_ENV
+      # - run: echo ${{env.PR_OBJJ}}
+      # - run: echo ${{env.PR_OBJJ.url}}
+
+
+      # - run: echo URL = ${{fromJSON(env.PR_DETAILS.url)}} >> $GITHUB_ENV
+      # - run: echo ${{env.URL}}
+      # - run: echo ${{fromJSON(env.PR_DETAILS.url)}} 
+      
+
+      # - run: echo ${{ github.event.inputs.pr }}
+      # - run: echo ${{env.PR_DETAILS}}
+      # - name: Repository checkout
+      #   uses: actions/checkout@v3
+      #   with:
+      #     ref: ${{env.PR_DETAILS}}
+      #     fetch-depth: 0
+      # - run: git checkout HEAD^
+
+      # - run: echo "HELLO"
+      #   if: ${{ github.event.inputs.slack != null }}
+      # - run: echo "WORLD"
+      #   if: ${{ github.event.inputs.slack != null }}
+      # - run: echo "YOGESH"
+      #   if: ${{ github.event.inputs.slack == null }}
+
+      # - run: echo ${{github.event.inputs.slack}}
+
+      # - run: echo VAL=beetaaa >> $GITHUB_ENV
+      # - run: echo VAL=${{github.event.inputs.slack}} >> $GITHUB_ENV
+      #   if: ${{github.event.inputs.slack != null }}
+      
+      # - run: echo ${{env.VAL}}
+      # - name: Notify slack failure
+      #   if: success()
+      #   uses: voxmedia/github-action-slack-notify-build@v1
+      #   with:
+      #     channel_id: ${{ github.event.inputs.slack }} || {{env.beeta}}
+      #     status: BUILD FOR AUTOMATION TEST FAILED DISPATHER DEMO
+      #     color: danger
+      #   env:
+      #     SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+
+
+      - name: Use success script
+        if: success()
+        uses: actions/github-script@v6
+        id: success-step
+        with:
+          script: |
+            const repoNameURL = `<${{fromJSON(env.PR_DETAILS).head.repo.html_url}}|${context.repository}>`
+            const apkURL = `<${context.url}|OMS-App.apk>`
+            const footerURL = `<${{fromJSON(env.PR_DETAILS).head.repo.html_url}}|${context.repository}>`
+            return {
+              "blocks": [
+                {
+                  "type": "header",
+                  "text": {
+                    "type": "plain_text",
+                    "text": "Automation Alert"
+                  }
+                }
+              ],
+              "attachments": [
+                {
+                  "mrkdwn_in": ["fields"],
+                  "color": "good",
+                  "fields": [
+                    {
+                      "title": "Status",
+                      "value": "Automation test completed successfully"
+                    },
+                    {
+                      "title": "Repo",
+                      "value": repoNameURL,
+                      "short": true
+                    },
+                    {
+                      "title": "APK",
+                      "value": apkURL,
+                      "short": true
+                    },
+                    {
+                      "title": "Event",
+                      "value": context.eventName,
+                      "short": true
+                    },
+                    {
+                      "title": 'Push to',
+                      "value": context.ref_name,
+                      "short": true
+                    }
+                  ],
+                  "footer": footerURL,
+                  "footer_icon": "https://github.githubassets.com/favicon.ico",
+                  "ts": Math.floor(Date.now() / 1000)
+                }
+              ]
+            }
+      - name: Notify slack success
+        if: success()
+        uses: slackapi/slack-github-action@v1.19.0
+        with:
+          channel-id: C03JYN4C56D
+          payload: ${{ steps.success-step.outputs.result}}
+        env:
+          SLACK_BOT_TOKEN: xoxb-3629189069333-3625515878518-T9gbtPZTEOSDeYodCZdDtNff
+      - name: Use Failure script
+        if: failure()
+        uses: actions/github-script@v6
+        id: failure-step
+        with:
+          script: |
+            const repoNameURL = `<${{fromJSON(env.PR_DETAILS).head.repo.html_url}}|${context.repository}>`
+            const footerURL = `<${{fromJSON(env.PR_DETAILS).head.repo.html_url}}|${context.repository}>`
+            return {
+              "text": "HELLO WORLD",
+              "blocks": [
+                {
+                  "type": "header",
+                  "text": {
+                    "type": "plain_text",
+                    "text": "Automation Alert"
+                  }
+                }
+              ],
+              "attachments": [
+                {
+                  "mrkdwn_in": ["fields"],
+                  "color": "danger",
+                  "fields": [
+                    {
+                      "title": "Status",
+                      "value": "Automation test failed"
+                    },
+                    {
+                      "title": "Repo",
+                      "value": repoNameURL,
+                      "short": true
+                    },
+                    {
+                      "title": "Event",
+                      "value": context.eventName,
+                      "short": true
+                    },
+                    {
+                      "title": 'Push to',
+                      "value": context.ref_name,
+                      "short": true
+                    }
+                  ],
+                  "footer": footerURL,
+                  "footer_icon": "https://github.githubassets.com/favicon.ico",
+                  "ts": Math.floor(Date.now() / 1000)
+                }
+              ]
+            }
+      - name: Notify slack Failure
+        if: failure()
+        uses: slackapi/slack-github-action@v1.19.0
+        with:
+          channel-id: C03JYN4C56D
+          payload: ${{ steps.failure-step.outputs.result}}
+        env:
+          SLACK_BOT_TOKEN: xoxb-3629189069333-3625515878518-T9gbtPZTEOSDeYodCZdDtNff
