@@ -14,7 +14,7 @@ jobs:
          curl --location --request POST 'https://api.github.com/repos/yogeshpanchal8195/receiver-demo/dispatches' \
           --header 'Accept: application/vnd.github.v3+json' \
           --header 'Content-Type: application/json' \
-          --header 'Authorization: Bearer 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' \
+          --header 'Authorization: token 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' \
           --data-raw '{ "event_type":"automate-test", "client_payload":{"unit":"false"} }'
 
       # - name: Repository Dispatch 
